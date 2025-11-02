@@ -1,73 +1,50 @@
-# React + TypeScript + Vite
+# MERN Frontend - Agent Management & Task Distribution
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the frontend for a MERN stack application that manages Agents, allows file uploads for task distribution, and shows distributed task lists.  
+Access to all features is restricted to authenticated (logged-in) users.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## React Compiler
+### Authentication
+- Secure Admin Login page.
+- Routes protected using JWT cookie authentication.
+- Users cannot access any page (Add Agent, Distributed Lists) without logging in.
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+### Agent Management
+- **Add Agent Page**
+  - Add new agents by providing name, email, mobile number, and password.
+  - Automatically redistributes uploaded tasks whenever a new agent is added.
+- **Delete Agent**
+  - Agents can be removed, and tasks are automatically rebalanced among remaining agents.
 
-## Expanding the ESLint configuration
+### Task Distribution
+- **Distributed Page**
+  - Upload a `.csv` file containing the task data (`FirstName, Phone, Notes`).
+  - The system distributes the tasks equally among available agents.
+  - Displays a scrollable list of agents, each with their assigned tasks.
+  - Each agent card shows:
+    - Name
+    - Email
+    - Mobile Number
+    - Assigned tasks with proper separation and layout.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Protected Routing
+- Only logged-in users can access:
+  - `/add-agent`
+  - `/distributed`
+- If not logged in, users are redirected to the login page.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Tech Stack
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Frontend
+- React (Vite)
+- TypeScript
+- React Router DOM
+- Axios
+- React Hook Form + Zod
+- Styled Components
+- JWT Authentication (via cookies)
